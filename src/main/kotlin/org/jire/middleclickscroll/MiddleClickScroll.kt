@@ -3,13 +3,12 @@ package org.jire.middleclickscroll
 import com.github.kwhat.jnativehook.GlobalScreen
 import com.github.kwhat.jnativehook.NativeInputEvent
 import com.github.kwhat.jnativehook.mouse.NativeMouseEvent
-import com.github.kwhat.jnativehook.mouse.NativeMouseWheelEvent
 import java.awt.Robot
 import java.lang.reflect.Field
 import java.util.logging.Level
 import java.util.logging.Logger
-import kotlin.concurrent.thread
 import kotlin.math.absoluteValue
+import kotlin.math.min
 
 
 /**
@@ -51,7 +50,7 @@ object MiddleClickScroll {
                 }
             }
             val ady = dy.absoluteValue
-            if (ady > 50) {
+            if (ady > 25) {
                 robot.mouseWheel(if (dy > 0) -1 else 1)
                 /*val event = NativeMouseWheelEvent(
                     NativeMouseEvent.NATIVE_MOUSE_WHEEL, 0,
@@ -64,16 +63,12 @@ object MiddleClickScroll {
                 /*GlobalScreen.postNativeEvent(evenval g2d = g as Graphics2Dt)
                 println("posted")*/
                 //println(dy)
-                val sleep = when {
-                    ady >= 600 -> 3L
-                    ady >= 500 -> 5L
-                    ady >= 400 -> 10L
-                    ady >= 300 -> 20L
-                    ady >= 200 -> 30L
-                    ady >= 100 -> 40L
-                    else -> 50L
-                }
-                Thread.sleep(sleep)
+                val scale = 500.0
+                val ratio = 1.0 - (min(scale, ady.toDouble()) / scale)
+                val speed = 5.75
+                val sleep = ratio * scale / speed
+                //println("ratio=$ratio, newSleep=$sleep")
+                Thread.sleep(sleep.toLong())
             } else {
                 Thread.sleep(50L)
             }
