@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+}
+
+group 'org.jire'
+version '0.1.0'
+
+repositories {
+    jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    //compile group: 'com.1stleg', name: 'jnativehook', version: '2.1.0'
+    compile group: 'com.github.kwhat', name: 'jnativehook', version: '2.2-20201020.204828-35'
+}
